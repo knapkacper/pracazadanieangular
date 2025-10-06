@@ -1,0 +1,40 @@
+<section class="root">
+  <h2>Wypożyczalnia książek, zaliczenie</h2>
+
+  <label>
+    <span>Wybierz użytkownika z listy:</span>
+    <select (change)="onUserChange($event)" [value]="selectedUser()?.id ?? ''">
+      <option value="">-- wybierz z listy --</option>
+      <option *ngFor="let u of users()" [value]="u.id">{{ u.name }} ({{ u.id }})</option>
+    </select>
+  </label>
+
+  <div>
+    <span>Aktualny klient: <strong>{{ currentUserName() }}</strong></span>
+    <span *ngIf="limitReached()">Limit 3 wypożyczeń osiągnięty</span>
+  </div>
+
+  <div>
+    <div>
+      <h3>Dostępne książki</h3>
+      <ul>
+        <li *ngFor="let b of available()">
+          {{ b.title }}
+          <button type="button" (click)="borrow(b)" [disabled]="limitReached() || !selectedUser()">Wypożycz</button>
+        </li>
+        <li *ngIf="available().length === 0">Brak książek do wypożyczenia</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Twoje wypożyczenia</h3>
+      <ul>
+        <li *ngFor="let b of borrowed()">
+          {{ b.title }}
+          <button type="button" (click)="remove(b)" aria-label="Oddaj książkę">×</button>
+        </li>
+        <li *ngIf="borrowed().length === 0">Brak wypożyczonych książek</li>
+      </ul>
+    </div>
+  </div>
+</section>
